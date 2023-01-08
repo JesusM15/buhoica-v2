@@ -166,11 +166,13 @@
                         <a class="flex-1 btn-link" href="{{similar_book.get_absolute_url}}">
                             Detalles
                         </a>
+                        {% if request.user.is_active %}
                         <a {% if request.user in similar_book.users_likes.all %}class="like btn-outline favorite-btn unlikea"{% else %}class="like btn-outline likea" {% endif %}  href="#" data-id="{{similar_book.id}}" data-tipo="{% if similar_book.pdf %}d{% else %}f{% endif %}" data-action="{% if request.user in similar_book.users_likes.all %}un{% endif %}like">
                             <span class="material-icons heart-span">
                                 favorite
                             </span>
                         </a>
+                        {% endif %}
                     </div>
                     <br>
                 </div>
