@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    - Lista de libros
+{% endblock titulo %}
+
+{% block css %}
+    <style>
+        .btn-outline-hover{
+            background:transparent !important;
+        }
+        .favorite-btn-hover:hover{
+            -webkit-text-stroke: 0px #000;
+            color: #FF0000 !important;
+        }
+    </style>
+{% endblock css %}
+
+{% block contenido %}
+    {% include 'componentes/includes/search_bar.html' %}
+    <br>
+    <div class="container mx-auto px-4 md:container md:mx-auto flex flex-wrap " style="justify-content: center;gap:15px;">
+        {% for book in books %}
+        <div class="max-w-sm rounded overflow-hidden shadow-lg">
+            <img class="w-full image-card" src="{% if book.imagen %}{{book.imagen.url}}{% else %}{% static 'img/imagen-nodisponible.jpg' %}{% endif %}" alt="Sunset in the mountains">
+            <div class="px-6 py-4">
+            <a style="text-decoration:none;color:#000;" href="#">
+                <div class="font-bold text-xl mb-2">
+                    {{book|truncatewords:3}}
+                </div>
+            </a>
+            <p class="text-gray-700 text-base">
+                {{ book.descripcion|truncatewords:12 }}
+            </p>
+            </div>
+            <div class="px-6 flex container-buttons">
+                <a class="flex-1 btn-link" href="{% if book.pdf %}{% url 'list_comments' 'd' book.id book.slug %}{% else %}{% url 'list_comments' 'f' book.id book.slug %}{% endif %}">
+                    Ver comentarios
+                </a>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <!-- Paginacion -->
+    {% include 'componentes/includes/pagination.html' with page=books %}
+
+{% endblock contenido %}

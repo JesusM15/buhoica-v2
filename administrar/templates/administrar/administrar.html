@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    - Administrar
+{% endblock titulo %}
+
+{% block css %}
+    <style>
+        .btn-che{
+            background: #000;
+            border-radius: 4px;
+        }
+        .btn-che{
+            color: #fff !important;
+            text-decoration: none;
+        }
+        th{
+            font-size: 1.2em;
+        }
+    </style>
+{% endblock css %}
+
+{% block contenido %}
+    <div class="overflow-x-auto relative sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">
+                        Nombre
+                    </th>
+                    <th scope="col" class="py-3 px-6" style="text-align:end;">
+                        Ir
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Solicitudes para administrador
+                    </th>
+                    <td class="py-4 px-6" style="text-align:end;">
+                        <a href="{% url 'solicitudes' %}" class="font-medium text-blue-600 dark:text-blue-500 btn-che material-icons" style="padding:12px;">
+                            visibility
+                        </a>
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Subir libro
+                    </th>
+                    <td class="py-4 px-6" style="text-align:end;">
+                        <a href="{% url 'upload_book' %}" class="btn-che font-medium text-blue-600 dark:text-blue-500 material-icons" style="padding:12px;">
+                            upload
+                        </a>
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Editar libros
+                    </th>
+                    <td class="py-4 px-6" style="text-align:end;">
+                        <a href="{% url 'edit_books' %}" class="btn-che font-medium text-blue-600 dark:text-blue-500  material-icons" style="padding:12px;">
+                            edit
+                        </a>                           
+                    </td>
+                </tr>
+                <tr class="bg-white dark:bg-gray-800">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Comentarios
+                    </th>
+                    <td class="py-4 px-6" style="text-align:end;">
+                        <a href="{% url 'list_pc' %}" class="btn-che font-medium text-blue-600 dark:text-blue-500 material-icons " style="padding:12px;">
+                            comment
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock contenido %}

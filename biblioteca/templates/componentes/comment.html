@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    - Comentar {{book}}
+{% endblock titulo %}
+
+{% block contenido %}
+    {% if comment %}
+        <h2>
+            Tu comentario ha sido añadido.
+        </h2>
+        <a href="{{book.get_absolute_url}}" style="color:purple;">
+            Volver al libro.
+        </a>
+    {% else %}
+        {% include "biblioteca/componentes/includes/comment_form.html" %}
+    {% endif %}
+{% endblock contenido %} 

@@ -1,0 +1,28 @@
+
+    <style>
+        .form-container{
+            width: 100%;
+            padding: 0 12px;
+        }
+
+        .btn-submit{
+            padding: 7px 22px;
+            cursor: pointer;
+            font-size: 1em;
+            background: rgb(40 0 34);
+            border-radius: 24px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.4s;
+        }
+        .btn-submit:hover{
+            background: rgb(94, 1, 80);
+        }
+    </style>
+
+    <form class="form-container" method="POST" action="{% url 'book_comment' type book.id request.user %}">   
+        {% csrf_token %}
+        <textarea name="cuerpo" required id="id_cuerpo" id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Deja un comentario..." style="resize:none"></textarea>
+        <br>
+        <input type="submit" value="Añadir un comentario" class="btn btn-submit"> 
+    </form>

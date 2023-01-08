@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+    - Favoritos
+{% endblock titulo %}
+
+{% block css %}
+    <style>
+        .unlikea{
+            border: 1px solid #FF0000;
+            padding: 0px 12px;
+            background: #fc8b8b;
+            color: #FF0000 !important;
+        }
+        .unlikea > span{
+            color: #FF0000 !important;
+        }
+        .likea > span{
+            color: #fff !important;
+        }
+        .heart-span-hover{
+            padding: 8px;
+            -webkit-text-stroke: 0px red;
+        }
+    </style>
+{% endblock css %}
+
+{% block contenido %}
+    {% include 'componentes/includes/search_bar.html' %}
+    <br>
+    <div class="container mx-auto px-4 md:container md:mx-auto flex flex-wrap " style="justify-content: center;gap:15px;">
+        {% for book in books %}
+        <div class="max-w-sm rounded overflow-hidden shadow-lg">
+            <img class="w-full image-card" src="{% if book.imagen %}{{book.imagen.url}}{% else %}{% static 'img/imagen-nodisponible.jpg' %}{% endif %}" alt="Sunset in the mountains">
+            <div class="px-6 py-4">
+            <a style="text-decoration:none;color:#000;" href="#">
+                <div class="font-bold text-xl mb-2">
+                    {{book|truncatewords:3}}
+                </div>
+            </a>
+            <p class="text-gray-700 text-base">
+                {{ book.descripcion|truncatewords:12 }}
+            </p>
+            </div>
+            <div class="px-6 flex container-buttons">
+                <a class="flex-1 btn-link" href="{{book.get_absolute_url}}">
+                    Detalles
+                </a>
+                <a {% if request.user in book.users_likes.all %}class="like btn-outline favorite-btn unlikea"{% else %}class="like btn-outline likea" {% endif %}  href="#" data-id="{{book.id}}" data-tipo="{% if book.pdf %}d{% else %}f{% endif %}" data-action="{% if request.user in book.users_likes.all %}un{% endif %}like">
+                    <span class="material-icons heart-span">
+                        favorite
+                    </span>
+                </a>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+    <!-- Paginacion -->
+    {% include 'componentes/includes/pagination.html' with page=books %}
+
+{% endblock contenido %}
+
+{% block domready %}
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script>
+        const csrftoken = Cookies.get('csrftoken'); 
+        document.addEventListener('DOMContentLoaded', (event) =>{
+            //dom
+            const url = '{% url "like" %}';
+            var options = {
+                method: "POST",
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin'
+            }
+            var buttons = document.querySelectorAll('a.like');
+
+                buttons.forEach(function(item, id, type){
+                        item.addEventListener('click', function(e){
+                            e.preventDefault();
+                            var likeButton = this;
+                            //add requestBody
+                            var formData = new FormData();
+                            formData.append('id', likeButton.dataset.id);
+                            formData.append('action', likeButton.dataset.action);
+                            formData.append('tipo', likeButton.dataset.tipo);
+                            options['body'] = formData;
+
+                            //enviar HTTP request
+                            fetch(url, options)
+                            .then(
+                                response => response.json()
+                            )
+                            .then(
+                                data =>{
+                                    if(data['status']==='ok'){
+                                        var previousAction = likeButton.dataset.action;
+                                        //toggle
+                                        likeButton.classList.remove(`${previousAction}a`);
+                                        var action = previousAction === 'like' ? 'unlike': 'like';
+                                        likeButton.dataset.action = action;
+                                        likeButton.classList.add(`${action}a`);
+                                    }
+                                }
+                            )
+                    });           
+           
+                })
+    
+        });
+    </script>
+{% endblock domready %}

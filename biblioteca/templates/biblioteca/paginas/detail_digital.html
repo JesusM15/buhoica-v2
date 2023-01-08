@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanizelib %}
+
+{% block titulo %}
+    - {{book}}
+{% endblock titulo %}
+
+{% block css %}
+    <style>
+        .book-portada{
+            min-width: 400px;
+            max-width: 100%;
+            margin: auto;
+            height: auto;
+            max-height: 600px;
+        }
+        .book-title{
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.6em;
+            margin-top: 6px;
+        }
+
+        .btn-buy{
+            padding: 12px;
+            border-radius: 4px;
+
+        }
+        
+        .title{
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.8em;
+        }
+
+        /* .p{
+        } */
+
+        .details-p{
+            color: rgb(145, 145, 145);
+            text-align: center;
+            margin: auto;
+            display: block;
+        }
+
+        .btn-tags{
+            padding: 2px 20px;
+            font-size: 1em;
+            background: rgb(40 0 34);
+            border-radius: 24px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.4s;
+        }
+
+        .btn-tags:hover{
+            background: rgb(78, 1, 67);
+        }
+
+        .similars{
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .comment-container{
+            padding: 12px;
+        }
+
+        .comentario{
+            padding:4px;
+            min-height: 60px;
+        }
+
+        .unlikea{
+            border: 1px solid #FF0000;
+            padding: 0px 12px;
+            background: #fc8b8b;
+            color: #FF0000 !important;
+        }
+        .unlikea > span{
+            color: #FF0000 !important;
+        }
+        .likea > span{
+            color: #fff !important;
+        }
+        .heart-span-hover{
+            padding: 8px;
+            -webkit-text-stroke: 0px red;
+        }
+
+        @media screen and (max-width:500px){
+            #main, .container{
+                padding: 0px !important;
+                margin:0px !important;
+            }
+            .similars{
+                padding:12px;
+            }
+            .p{
+                text-align: justify;
+                padding: 12px;
+            }
+        }
+
+        @media screen and (max-width:500px){
+            #main, .container{
+                padding: 0px !important;
+                margin:0px !important;
+            }
+            .p{
+                text-align: justify;
+                padding: 12px;
+            }
+        }
+    </style>
+{% endblock css %}
+
+{% block contenido %}
+    <div class="container mx-auto">
+        <div class="flex flex-wrap" style="margin:auto;gap:15px;">
+            <div class="flex-1 flex-menor">
+                <picture class="picture">
+                    <img src="{{book.imagen.url}}" alt="{{book}}" class="max-w-lg h-auto book-portada" style="width:100%;max-width: 480px;"/>
+                    <div>
+                        <h2 class="book-title" >
+                            {{book}}
+                        </h2>
+                        <div>
+                            <p class="details-p">
+                                <strong>Publicaci&oacute;n: </strong> {{book.fecha_de_publicacion|date}}
+                            </p>
+                            <p class="details-p">
+                                <strong>Autor: </strong> {{book.autor}}
+                            </p>
+                            <p class="details-p">
+                            <strong>Precio:  </strong> <strong style="color:green;">${{book.precio}}</strong>
+                            </p>
+                        </div>
+                        <br>
+                        <div style="text-align: center;margin: auto;">
+                            <a href="{{book}}" class="btn btn-link btn-buy" target="BLANK">
+                                Ir a comprarlo
+                            </a>
+                        </div>
+                    </div>
+                </picture>
+                <br>
+            </div>
+            <div class="flex-1" style="min-width:300px;">
+                <h1 class="title">
+                    Resumen
+                </h1>
+                <p class="p">
+                    {{book.descripcion}}
+                </p>
+            </div>
+        </div>
+        <br>
+        <h2 style="text-align:center;margin-bottom: 4px;font-size:1.6em;font-weight: bold;">Libros similares</h2>
+        <div class="flex flex-wrap similars">
+            {% for similar_book in similar_books %}
+                <div class="max-w-sm rounded overflow-hidden shadow-lg">
+                    <img class="w-full image-card" src="{% if similar_book.imagen %}{{similar_book.imagen.url}}{% else %}{% static 'img/imagen-nodisponible.jpg' %}{% endif %}" alt="Sunset in the mountains">
+                    <div class="px-6 py-4">
+                    <a style="text-decoration:none;color:#000;" href="#">
+                        <div class="font-bold text-xl mb-2">
+                            {{similar_book|truncatewords:3}}
+                        </div>
+                    </a>
+                    <p class="text-gray-700 text-base">
+                        {{ similar_book.descripcion|truncatewords:12 }}
+                    </p>
+                    </div>
+                    <div class="px-6 flex container-buttons">
+                        <a class="flex-1 btn-link" href="{{similar_book.get_absolute_url}}">
+                            Detalles
+                        </a>
+                        <a {% if request.user in similar_book.users_likes.all %}class="like btn-outline favorite-btn unlikea"{% else %}class="like btn-outline likea" {% endif %}  href="#" data-id="{{similar_book.id}}" data-tipo="{% if similar_book.pdf %}d{% else %}f{% endif %}" data-action="{% if request.user in similar_book.users_likes.all %}un{% endif %}like">
+                            <span class="material-icons heart-span">
+                                favorite
+                            </span>
+                        </a>
+                    </div>
+                    <br>
+                </div>
+            {% empty %}
+                <h2>No se encontraron libros similares.</h2>
+            {% endfor %}
+        </div>
+        <br>
+        <div style="padding:12px">
+            <h3 style="margin-bottom:6px;">
+                <strong>Etiquetas:</strong>
+            </h3>
+            <div class="flex flex-wrap" style="gap:4px;">
+                {% for tag in book.tags.all %}
+                    <a href="#" class="btn btn-tags">
+                        {{tag}}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <!-- <h3 style="padding:4px;margin-bottom:4px;">Comentar:</h3> -->
+        {% include "componentes/includes/comment_form.html" with type='d' %}
+        <br>
+        <div class="comment-container flex flex-wrap">
+            {% with comments.count as total_comments %}
+                <h3 style="color:gray;">
+                    {{total_comments}} comentario{{total_comments|pluralize}}
+                </h3>
+            {% endwith %}
+        </div>
+        <div class="comment-container flex flex-wrap" style="padding-top:0px;">
+            {% for comment in comments %}
+                <label for="message" class="block mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                    {{comment.user}}
+                    <p style="color:gray;font-size:0.8em;">
+                        {{comment.creado|naturaldate}}
+                    </p>
+                </label>
+                <div id="message"  class="mb-3 comentario block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly style="resize: none;">
+                    {{comment.cuerpo|linebreaks}}
+                </div>
+            {% empty %}
+                <h3 style="color:rgb(26, 26, 26);">
+                    No hay comentarios
+                </h3>
+            {% endfor %}
+        </div>
+
+    </div>
+    </div>
+{% endblock contenido %}
+
+{% block domready %}
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script>
+        const csrftoken = Cookies.get('csrftoken'); 
+        document.addEventListener('DOMContentLoaded', (event) =>{
+            //dom
+            const url = '{% url "like" %}';
+            var options = {
+                method: "POST",
+                headers: {'X-CSRFToken': csrftoken},
+                mode: 'same-origin'
+            }
+            var buttons = document.querySelectorAll('a.like');
+
+                buttons.forEach(function(item, id, type){
+                        item.addEventListener('click', function(e){
+                            e.preventDefault();
+                            var likeButton = this;
+                            //add requestBody
+                            var formData = new FormData();
+                            formData.append('id', likeButton.dataset.id);
+                            formData.append('action', likeButton.dataset.action);
+                            formData.append('tipo', likeButton.dataset.tipo);
+                            options['body'] = formData;
+
+                            //enviar HTTP request
+                            fetch(url, options)
+                            .then(
+                                response => response.json()
+                            )
+                            .then(
+                                data =>{
+                                    if(data['status']==='ok'){
+                                        var previousAction = likeButton.dataset.action;
+                                        //toggle
+                                        likeButton.classList.remove(`${previousAction}a`);
+                                        var action = previousAction === 'like' ? 'unlike': 'like';
+                                        likeButton.dataset.action = action;
+                                        likeButton.classList.add(`${action}a`);
+                                    }
+                                }
+                            )
+                    });           
+           
+                })
+    
+        });
+    </script>
+{% endblock domready %}

@@ -1,0 +1,119 @@
+{% load static %}
+<section id="sidebar">
+    <!-- drawer component -->
+    <div id="drawer-navigation" class="fixed z-40 h-screen p-4 overflow-y-auto bg-white w-80 dark:bg-gray-800 transition-transform left-0 top-0 -translate-x-full" tabindex="-1" aria-labelledby="drawer-navigation-label" aria-hidden="true">
+        <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Menu</h5>
+        <button type="button" data-drawer-dismiss="drawer-navigation" aria-controls="drawer-navigation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" >
+            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd">
+                </path>
+            </svg>
+            <span class="sr-only">Close menu</span>
+        </button>
+    <div class="py-4 overflow-y-auto" style="overflow-x: hidden;">
+        <ul class="space-y-2">
+            <li>
+                <a href="{% url 'home' %}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <img src="{% static 'img/favicon.png' %}" class="w-6 h-8 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
+                    <span class="ml-3">Buhoica</span>
+                </a>
+            </li>
+            <!-- <li>
+                <button type="button" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                    <span class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white material-icons">
+                        filter_alt
+                    </span>
+                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                        Filtros
+                    </span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="{% url 'home_p' 'fecha_de_publicacion' %}" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            Publicaci&oacute;n del libro
+                        </a>
+                    </li>
+                </ul>
+            </li> -->
+            <li>
+                <button type="button" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                    <span class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white material-icons">
+                        sort
+                    </span>
+                    <span class="flex-1 ml-3 text-left whitespace-nowrap">
+                        Ordenar
+                    </span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="{% url 'home' %}" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            Fecha de subida
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home_p' 'titulo' %}" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            Alfabeticamente
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home_p' 'fecha_de_publicacion' %}" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                            Publicaci&oacute;n del libro
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            {% if request.user.is_active %}
+            <li>
+                <a href="{% url 'favorites' %}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span style='color:#FF0000;' class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white material-icons">
+                        favorite
+                    </span>
+                    <span class="flex-1 ml-3 whitespace-nowrap">
+                        Favoritos
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'profile' request.user.id request.user %}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    <span class="flex-1 ml-3 whitespace-nowrap">
+                        Cuenta
+                    </span>
+                </a>
+            </li>
+            {% if request.user.profile.administrador %}
+            <li>
+                <a href="{% url 'administrar' %}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white material-icons">
+                        manage_account
+                    </span>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Administrar</span>
+                </a>
+            </li>
+            {% endif %}
+            <li>
+                <a href="{% url 'logout' %}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white material-icons">
+                        logout
+                    </span>
+                    <span class="flex-1 ml-3 whitespace-nowrap">
+                        Cerrar sesi&oacute;n
+                    </span>
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'login' %}" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <span class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white material-icons">
+                        login
+                    </span>
+                    <span class="flex-1 ml-3 whitespace-nowrap">Iniciar sesi&oacute;n</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+        </div>
+    </div>
+</section>

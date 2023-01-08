@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    -Registro hecho
+{% endblock titulo %}
+
+{% block contenido %}
+    <style>
+        .div{
+            height: 70vh;
+            vertical-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+    <div class="text-center div">
+        <h1>
+            Registro hecho con exito.
+            <a href="{% url 'login' %}" style="border-bottom:2px solid purple;color: purple;">
+                Iniciar sesi&oacute;n.
+            </a>
+        </h1>
+    </div>
+{% endblock contenido %}

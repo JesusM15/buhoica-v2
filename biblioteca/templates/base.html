@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <title>Buhoica{% block titulo %}{% endblock titulo %}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.5/dist/flowbite.min.css" />
+    {% block css %}
+    
+    {% endblock css %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="bg-white dark:bg-slate-800">
+
+    {% include 'componentes/nav.html' %}
+
+    {% include 'componentes/sidebar.html' %}
+
+    <section id="main" class="main-container md:container mx-auto px-4 md:mx-auto">
+        <div class="container mx-auto px-4 md:container md:mx-auto">
+        <br>
+        {% block contenido %}
+
+        {% endblock contenido %}
+        </div>
+        <br>
+    </section>
+
+    <script src="https://unpkg.com/flowbite@1.5.5/dist/flowbite.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    {% block domready %}
+
+    {% endblock domready %}
+</body>
+</html>
