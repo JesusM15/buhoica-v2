@@ -19,7 +19,7 @@ class Libro(models.Model):
     def __str__(self):return f'{self.titulo}'
     
     def save(self, *args, **kwargs):
-        if not self.slug:self.slug = slugify(self.nombre)
+        if not self.slug:self.slug = slugify(self.titulo)
         super().save(*args, **kwargs)
     
     class Meta:abstract = True
