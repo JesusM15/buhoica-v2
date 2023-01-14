@@ -113,6 +113,7 @@ def edit_bookF(request, book_id, book_slug):
         form = UploadBookForm(instance=book, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()   
+            return redirect('home')
     else:
         form = UploadBookForm(instance=book)
     return render(request, 'administrar/libros/editar.html', {'form':form,'book':book})
